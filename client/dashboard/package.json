@@ -6,6 +6,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.14",
     "@randlabs/myalgo-connect": "^1.4.1",
     "algosdk": "^1.23.2",
     "next": "latest",
