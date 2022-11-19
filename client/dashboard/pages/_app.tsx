@@ -5,9 +5,15 @@ import { useState } from "react";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
 import { Button, ThemeProvider, Typography } from "@mui/material";
 import { THEME } from "../src/utils/theme";
+import algosdk from "algosdk";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [address, setAddress] = useState(null);
+
+  // const algodToken = "";
+  // const algodServer = "https://node.algoexplorerapi.io";
+  // const algodPort = 443;
+  // const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
   const connectWallet = async () => {
     new MyAlgoConnect()
@@ -15,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       .then((accounts) => {
         const _account = accounts[0];
         setAddress(_account.address);
+        localStorage.setItem("address", _account.address);
         console.log(_account.address);
       })
       .catch((error) => {
@@ -37,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           ) : (
             <>
               <Typography className="text-blue-500" variant="h2">
-                Algo2Gether - Community Area
+                TUM Blockchain Club - Members Area
               </Typography>
 
               <button
