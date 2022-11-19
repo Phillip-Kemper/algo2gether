@@ -1,4 +1,4 @@
-import { ThemeProvider, Typography } from "@mui/material";
+import { Grid, ThemeProvider, Typography } from "@mui/material";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -42,10 +42,25 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           ) : (
             <>
-              <img
-                src="https://s3.coinmarketcap.com/static/img/portraits/62e27661ae5a2d740c063fd2.png"
-                width="300px"
-              />
+              <Grid
+                container
+                direction="row"
+                alignItems={"center"}
+                justifyContent="space-between"
+              >
+                <Grid item>
+                  <img
+                    src="https://s3.coinmarketcap.com/static/img/portraits/62e27661ae5a2d740c063fd2.png"
+                    width="300px"
+                  />
+                </Grid>
+                <Grid item>
+                  <img
+                    src="https://uploads-ssl.webflow.com/631ad94cbdadc40fe03d6458/632091d7965a67571219e4be_tum_blockchain_logo_white-p-500.png"
+                    width="300px"
+                  />
+                </Grid>
+              </Grid>
               <Typography className="text-blue-500" variant="h2">
                 TUM Blockchain Club - Members Area
               </Typography>

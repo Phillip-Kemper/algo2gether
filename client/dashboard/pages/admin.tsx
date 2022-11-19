@@ -3,6 +3,7 @@ import MyAlgo from "@randlabs/myalgo-connect";
 import BasicTable from "../src/components/BasicTable";
 import { Typography } from "@mui/material";
 import { ASSET_ID } from "../src/utils/constants";
+import React from "react";
 
 export default function Admin() {
   const algodToken = "";

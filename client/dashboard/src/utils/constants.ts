@@ -29,4 +29,4 @@ export const utf8ToBase64String = (utf8String) => {
   return Buffer.from(utf8String, "utf8").toString("base64");
 };
 
-export const ASSET_ID = 312769;
+export const ASSET_ID = 123955050;
