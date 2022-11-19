@@ -1,29 +1,29 @@
 const { MongoClient } = require("mongodb");
 
-const uri = "mongodb+srv://admin:admin@cluster0.cozjs5f.mongodb.net/?retryWrites=true&w=majority";
+const uri =
+  "mongodb+srv://admin:admin@cluster0.cozjs5f.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
 const collection = client.db("test").collection("test");
 
-async function check(value) {
-    const findResult = await collection.find({address: value});
+export async function isBlackListed(address) {
+  const findResult = await collection.find({ address: address });
 
-    if (findResult != null){
-        console.log(`The address "`+ value + `" was already in the database`,);
-        return true;
-    }
-    console.log(`The address "`+ value + `" was already in the database`,);
+  if (findResult != null) {
+    console.log(`The address "` + address + `" was already in the database`);
+    return true;
+  }
+  console.log(`The address "` + address + `" was already in the database`);
 }
 
-async function post(address){
-    const doc = { address: address, isBlacklisted: true };
-    //TODO: Not necessary but, check if address is already in the db
+export async function addToBlackListAddress(address) {
+  const doc = { address: address, isBlacklisted: true };
+  //TODO: Not necessary but, check if address is already in the db
 
-    const result = await collection.insertOne(doc);
-    if (result != null){
-        console.log(
-            `A document was inserted with the _id: ${result.insertedId}`,);
-        return true;
-    }
+  const result = await collection.insertOne(doc);
+  if (result != null) {
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return true;
+  }
 }
 
 /*

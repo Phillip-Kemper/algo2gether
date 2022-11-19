@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { MenuItem, Select, Typography } from "@mui/material";
+import { Grid, MenuItem, Select, Typography } from "@mui/material";
 
 function createData(
   address: string,
@@ -53,6 +53,7 @@ export default function BasicTable({ rows }: { rows: any }) {
             <TableCell align="right">Opted In</TableCell>
             <TableCell align="right">Role</TableCell>
             <TableCell align="right">Assign New Role</TableCell>
+            <TableCell align="right">Revoke Access</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -85,6 +86,15 @@ export default function BasicTable({ rows }: { rows: any }) {
                   </MenuItem>
                 </Select>
               </TableCell>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <TableCell>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                      Revoke
+                    </button>
+                  </TableCell>
+                </Grid>
+              </Grid>
             </TableRow>
           ))}
         </TableBody>

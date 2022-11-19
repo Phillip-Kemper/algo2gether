@@ -56,7 +56,7 @@ export default function ApplicantTable({ rows }: { rows: any }) {
             <TableCell>Algorand Address</TableCell>
             <TableCell align="right">Opted In</TableCell>
             <TableCell align="right">Designated Role</TableCell>
-            <TableCell align="right">Assign New Role</TableCell>
+            <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
