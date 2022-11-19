@@ -2,7 +2,7 @@ import { Grid, ThemeProvider, Typography } from "@mui/material";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { THEME } from "../src/utils/theme";
 import "../styles/globals.css";
 
@@ -28,6 +28,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    setAddress(localStorage.getItem("address"));
+  }, []);
 
   return (
     <ThemeProvider theme={THEME}>

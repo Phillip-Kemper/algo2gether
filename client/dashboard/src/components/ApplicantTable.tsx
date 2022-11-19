@@ -1,13 +1,14 @@
 import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+import MyAlgo from "@randlabs/myalgo-connect";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Grid, MenuItem, Select, Typography } from "@mui/material";
-import { rejects } from "assert";
+import { algodClient, ASSET_ID } from "../utils/constants";
 
 function createData(
   address: string,
@@ -19,29 +20,49 @@ function createData(
   return { address, optedIn, role, actions };
 }
 
-const rows = [
-  createData(
-    "XXRBLKSVRI5UDNVFCUZMQ4JR4JXXIG75UU4M6WMQPRLZ4ZHYOY3GBNTECM",
-    21232,
-    "Admin",
-    5
-  ),
-  createData(
-    "XXRBLKSVRI5UDNVFCUZMQ4JR4JXXIG75UU4M6WMQPRLZ4ZHYOY3GBNTECM",
-    3223,
-    "Member",
-    5
-  ),
-  createData(
-    "XXRBLKSVRI5UDNVFCUZMQ4JR4JXXIG75UU4M6WMQPRLZ4ZHYOY3GBNTECM",
-    2342,
-    "Member",
-    5
-  ),
-];
+const transferAssetToAddress = async (toAddress) => {
+  const myAlgoWallet = new MyAlgo();
+  try {
+    let txn = await algodClient.getTransactionParams().do();
+
+    txn = {
+      ...txn,
+      fee: 1000,
+      flatFee: true,
+      type: "axfer",
+      assetIndex: ASSET_ID,
+      //from Admin to user Address
+      from: localStorage.getItem("address"),
+      to: toAddress,
+      amount: 1,
+      note: new Uint8Array(Buffer.from("Coin Master")),
+    };
+
+    console.log(txn);
+
+    const signedTxn = await myAlgoWallet.signTransaction(txn);
+
+    console.log(signedTxn.txID);
+
+    await algodClient.sendRawTransaction(signedTxn.blob).do();
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export default function ApplicantTable({ rows }: { rows: any }) {
   const reject = async (address) => {
+    try {
+      await fetch("/api/blacklist/" + address, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     // revoke on mongo then dont display anymore
   };
   return (
@@ -94,7 +115,10 @@ export default function ApplicantTable({ rows }: { rows: any }) {
                   spacing={"4"}
                 >
                   <Grid item>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button
+                      onClick={() => transferAssetToAddress(row.address)}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                    >
                       Approve
                     </button>
                   </Grid>
