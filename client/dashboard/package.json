@@ -6,7 +6,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@randlabs/myalgo-connect": "^1.4.1",
+    "algosdk": "^1.23.2",
     "next": "latest",
+    "raw-loader": "^4.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
