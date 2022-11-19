@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import MyAlgo from "@randlabs/myalgo-connect";
 import Head from "next/head";
 import Image from "next/image";
+import { Grid, Typography } from "@mui/material";
 
 const Home: NextPage = () => {
   const algodToken = "";
@@ -28,12 +29,6 @@ const Home: NextPage = () => {
       let txn = await algodClient.getTransactionParams().do();
 
       const ASSET_ID = 312769;
-      // let sender = address;
-      // let recipient = sender;
-      // let revocationTarget = undefined;
-      // let closeRemainderTo = undefined;
-      // let amount = 0;
-
       txn = {
         ...txn,
         fee: 1000,
@@ -45,16 +40,7 @@ const Home: NextPage = () => {
         amount: 0,
         note: new Uint8Array(Buffer.from("Hello World")),
       };
-      // let opttxn = algosdk.makeAssetTransferTxnWithSuggestedParams(
-      //   sender,
-      //   recipient,
-      //   closeRemainderTo,
-      //   revocationTarget,
-      //   amount,
-      //   new Uint8Array(Buffer.from("Hello World")),
-      //   ASSET_ID,
-      //   params
-      // );
+
       console.log(txn);
 
       let signedTxn = await myAlgoWallet.signTransaction(txn);
@@ -74,8 +60,22 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <button onClick={optInToAsset}>Opt In</button>
-      <button onClick={optedIn}>Opted in???</button>
+      <Typography className="m-5 absolute top-0 right-3">{address}</Typography>
+      <Typography variant="h2">Welcome to TBC</Typography>
+      <Typography variant="h4"> Your current status:</Typography>
+      <Typography variant="h4"> No Membership Requested</Typography>
+
+      <button
+        className="m-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+        onClick={optInToAsset}
+      >
+        Opt In Now!
+      </button>
+
+      <Typography variant="h4">
+        Waiting for a board members approval...
+      </Typography>
+      <Typography variant="h4">You are an active member.</Typography>
     </>
   );
 };

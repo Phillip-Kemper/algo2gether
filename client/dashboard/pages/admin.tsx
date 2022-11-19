@@ -1,5 +1,8 @@
 import algosdk from "algosdk";
 import MyAlgo from "@randlabs/myalgo-connect";
+import BasicTable from "../src/components/BasicTable";
+import { Typography } from "@mui/material";
+import { ASSET_ID } from "../src/utils/constants";
 
 export default function Admin() {
   const algodToken = "";
@@ -19,6 +22,33 @@ export default function Admin() {
   );
 
   const myAlgoWallet = new MyAlgo();
+
+  const getMembers = async () => {
+    const balances = await getAllAssets();
+    balances.filter((balance) => {
+      balance.amount > 0;
+    });
+
+    const getRevokedMembers = async () => {
+      //   balances.filter(() => {
+      //     balance.amount == 0  // && is in revoked list;
+      //   });
+      // };
+    };
+
+    const getRequestingMembers = async () => {
+      // balance opted in == 0. and not in the others
+    };
+
+    return balances;
+  };
+
+  const revokeMembership = async () => {
+    /*noop*/
+  };
+  const grantMembership = async () => {
+    /*noop*/
+  };
 
   const paymentTransaction = async () => {
     let txn = await algodClient.getTransactionParams().do();
@@ -49,16 +79,14 @@ export default function Admin() {
 
   const getAllAssets = async () => {
     try {
-      // const assetInfo = await indexerClient
-      //   .searchForAssets()
-      //   .name("DevDocsCoin")
-      //   .do();
-      const assetIndex = 2044572;
-      let assetInfo = await indexerClient.lookupAssetBalances(assetIndex).do();
+      const assetInfo = await indexerClient
+        .lookupAssetBalances(assetIndex)
+        .do();
 
       console.log(
         "Information for Asset Name: " + JSON.stringify(assetInfo, undefined, 2)
       );
+      return assetInfo;
     } catch (err) {
       console.log(err);
     }
@@ -66,9 +94,12 @@ export default function Admin() {
 
   return (
     <>
+      <Typography className="m-5 absolute top-0 right-3">{address}</Typography>
+      <Typography variant="h2">TBC Admin Area</Typography>
       <button onClick={paymentTransaction}>click</button>
-      <p> hi </p>
       <button onClick={getAllAssets}>list pls</button>
+
+      <BasicTable members={} />
     </>
   );
 }
