@@ -1,11 +1,10 @@
-import "../styles/globals.css";
+import { ThemeProvider, Typography } from "@mui/material";
+import MyAlgoConnect from "@randlabs/myalgo-connect";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useState } from "react";
-import MyAlgoConnect from "@randlabs/myalgo-connect";
-import { Button, ThemeProvider, Typography } from "@mui/material";
 import { THEME } from "../src/utils/theme";
-import algosdk from "algosdk";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [address, setAddress] = useState(null);
@@ -43,6 +42,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           ) : (
             <>
+              <img
+                src="https://s3.coinmarketcap.com/static/img/portraits/62e27661ae5a2d740c063fd2.png"
+                width="300px"
+              />
               <Typography className="text-blue-500" variant="h2">
                 TUM Blockchain Club - Members Area
               </Typography>

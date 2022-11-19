@@ -99,7 +99,7 @@ export default function Admin() {
       <button onClick={paymentTransaction}>click</button>
       <button onClick={getAllAssets}>list pls</button>
 
-      <BasicTable members={} />
+      <BasicTable />
     </>
   );
 }
