@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import { rejects } from "assert";
 
 function createData(
   address: string,
@@ -40,6 +41,9 @@ const rows = [
 ];
 
 export default function ApplicantTable({ rows }: { rows: any }) {
+  const reject = async (address) => {
+    // revoke on mongo then dont display anymore
+  };
   return (
     <TableContainer
       className="background-white"
@@ -97,7 +101,12 @@ export default function ApplicantTable({ rows }: { rows: any }) {
                   <tr />
 
                   <Grid item>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button
+                      onClick={async () => {
+                        await reject(row.address);
+                      }}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                    >
                       Reject
                     </button>
                   </Grid>
