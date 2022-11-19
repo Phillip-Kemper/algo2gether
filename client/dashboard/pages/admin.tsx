@@ -88,7 +88,9 @@ export default function Admin() {
 
   return (
     <>
-      <Typography className="m-5 absolute top-0 right-3">{address}</Typography>
+      <Typography className="m-5 absolute top-0 right-3">
+        Address: {address}
+      </Typography>
       <Typography className="mt-10 mb-2" variant="h4">
         TBC Members
       </Typography>
