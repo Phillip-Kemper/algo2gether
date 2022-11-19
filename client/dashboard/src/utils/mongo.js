@@ -5,7 +5,7 @@ const uri =
 const client = new MongoClient(uri);
 const collection = client.db("test").collection("test");
 
-export async function isBlackListed(address) {
+async function isBlackListed(address) {
   const findResult = await collection.find({ address: address });
 
   if (findResult != null) {
@@ -15,10 +15,14 @@ export async function isBlackListed(address) {
   console.log(`The address "` + address + `" was already in the database`);
 }
 
-export async function addToBlackListAddress(address) {
-  const doc = { address: address, isBlacklisted: true };
-  //TODO: Not necessary but, check if address is already in the db
+ async function listOfBlacklistedEntries(){
+  collection.find({ isBlacklisted: true }).toArray(function (err, docs) {
+      return docs;
+    });
+  }
 
+  async function addToBlackListAddress(address) {
+  const doc = { address: address, isBlacklisted: true };
   const result = await collection.insertOne(doc);
   if (result != null) {
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
