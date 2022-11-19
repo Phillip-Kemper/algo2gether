@@ -2,25 +2,12 @@ import algosdk from "algosdk";
 import MyAlgo from "@randlabs/myalgo-connect";
 import BasicTable from "../src/components/BasicTable";
 import { Typography } from "@mui/material";
-import { ASSET_ID } from "../src/utils/constants";
+import { algodClient, ASSET_ID, indexerClient } from "../src/utils/constants";
 import React from "react";
+import { getAssetBalanceForAddress, getOptedIn } from ".";
 
 export default function Admin() {
-  const algodToken = "";
-  const algodServer = "https://node.testnet.algoexplorerapi.io";
-  const algodPort = "443";
-  const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
   const address = localStorage.getItem("address");
-
-  const indexer_token = "";
-  const INDEXER_SERVER = "https://algoindexer.algoexplorerapi.io/";
-  const INDEXER_PORT = 443;
-
-  const indexerClient = new algosdk.Indexer(
-    indexer_token,
-    INDEXER_SERVER,
-    INDEXER_PORT
-  );
 
   const myAlgoWallet = new MyAlgo();
 
@@ -80,9 +67,7 @@ export default function Admin() {
 
   const getAllAssets = async () => {
     try {
-      const assetInfo = await indexerClient
-        .lookupAssetBalances(assetIndex)
-        .do();
+      const assetInfo = await indexerClient.lookupAssetBalances(ASSET_ID).do();
 
       console.log(
         "Information for Asset Name: " + JSON.stringify(assetInfo, undefined, 2)

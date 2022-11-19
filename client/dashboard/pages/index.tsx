@@ -1,31 +1,32 @@
-import algosdk from "algosdk";
-import type { NextPage } from "next";
+import { Typography } from "@mui/material";
 import MyAlgo from "@randlabs/myalgo-connect";
-import Head from "next/head";
-import Image from "next/image";
-import { Grid, Typography } from "@mui/material";
-import { ASSET_ID } from "../src/utils/constants";
+import type { NextPage } from "next";
 import React, { useEffect } from "react";
+import { algodClient, ASSET_ID, indexerClient } from "../src/utils/constants";
+
+export const getOptedIn = async (address: string) => {
+  const assetInfo = await indexerClient.lookupAssetBalances(ASSET_ID).do();
+  return assetInfo.balances.some((balance) => {
+    return balance.amount == 0 && balance.address == address;
+  });
+};
+
+export const getAssetBalanceForAddress = async (address: string) => {
+  const assetInfo = await indexerClient
+    .lookupAssetBalances(ASSET_ID)
+    .currencyGreaterThan(0)
+    .do();
+
+  return assetInfo.balances.some((balance) => {
+    balance.amount > 0 && balance.address == address;
+  });
+};
 
 const Home: NextPage = () => {
   const [hasBalance, setHasBalance] = React.useState(false);
   const [isOptedIn, setIsOptedIn] = React.useState(false);
 
-  const algodToken = "";
-  const algodServer = "https://node.testnet.algoexplorerapi.io";
-  const algodPort = "443";
-  const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
   const address = localStorage.getItem("address");
-
-  const indexer_token = "";
-  const INDEXER_SERVER = "http://131.159.14.109";
-  const INDEXER_PORT = 8980;
-
-  const indexerClient = new algosdk.Indexer(
-    indexer_token,
-    INDEXER_SERVER,
-    INDEXER_PORT
-  );
 
   const myAlgoWallet = new MyAlgo();
 
@@ -33,13 +34,12 @@ const Home: NextPage = () => {
     try {
       let txn = await algodClient.getTransactionParams().do();
 
-      const ASSET = ASSET_ID;
       txn = {
         ...txn,
         fee: 1000,
         flatFee: true,
         type: "axfer",
-        assetIndex: ASSET,
+        assetIndex: ASSET_ID,
         from: address,
         to: address,
         amount: 0,
@@ -58,37 +58,18 @@ const Home: NextPage = () => {
     }
   };
 
-  const getOptedIn = async () => {
-    const assetIndex = ASSET_ID;
-    const assetInfo = await indexerClient.lookupAssetBalances(assetIndex).do();
-    console.log(assetInfo);
-    setIsOptedIn(
-      assetInfo.balances.some((balance) => {
-        return balance.amount == 0 && balance.address == address;
-      })
-    );
-
-    const res = await indexerClient.lookupAccountAssets(address).do();
-    console.log(JSON.stringify(res, undefined, 2));
-  };
-
-  const getAssetBalanceForAddress = async () => {
-    const assetIndex = ASSET_ID;
-    const assetInfo = await indexerClient
-      .lookupAssetBalances(assetIndex)
-      .currencyGreaterThan(0)
-      .do();
-
-    setHasBalance(
-      assetInfo.balances.some((balance) => {
-        balance.amount > 0 && balance.address == address;
-      })
-    );
-  };
-
   useEffect(() => {
-    getAssetBalanceForAddress();
-    getOptedIn();
+    const sB = async () => {
+      const balance = await getAssetBalanceForAddress(address);
+      setHasBalance(balance);
+    };
+
+    const sO = async () => {
+      const opted = await getOptedIn(address);
+      setIsOptedIn(opted);
+    };
+    sB();
+    sO();
   }, [hasBalance, isOptedIn]);
 
   React.useMemo(() => {

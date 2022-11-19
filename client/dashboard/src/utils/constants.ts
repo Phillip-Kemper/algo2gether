@@ -9,16 +9,23 @@ const config = {
   indexerPort: "",
 };
 
+export const algodToken = "";
+export const algodServer = "https://node.testnet.algoexplorerapi.io";
+export const algodPort = "443";
 export const algodClient = new algosdk.Algodv2(
-  config.algodToken,
-  config.algodServer,
-  config.algodPort
+  algodToken,
+  algodServer,
+  algodPort
 );
 
+const indexer_token = "";
+const INDEXER_SERVER = "http://131.159.14.109";
+const INDEXER_PORT = 8980;
+
 export const indexerClient = new algosdk.Indexer(
-  config.indexerToken,
-  config.indexerServer,
-  config.indexerPort
+  indexer_token,
+  INDEXER_SERVER,
+  INDEXER_PORT
 );
 
 export const base64ToUTF8String = (base64String) => {
