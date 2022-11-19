@@ -5,6 +5,7 @@ import { Typography } from "@mui/material";
 import { algodClient, ASSET_ID, indexerClient } from "../src/utils/constants";
 import React, { useEffect } from "react";
 import { getAssetBalanceForAddress, getOptedIn } from ".";
+import ApplicantTable from "../src/components/ApplicantTable";
 
 export default function Admin() {
   const address = localStorage.getItem("address");
@@ -81,30 +82,24 @@ export default function Admin() {
     }
   };
 
+  React.useMemo(() => {
+    console.log(members);
+  }, [members]);
+
   return (
     <>
       <Typography className="m-5 absolute top-0 right-3">{address}</Typography>
-      <Typography variant="h2">TBC Admin Area</Typography>
+      <Typography className="mt-10 mb-2" variant="h4">
+        TBC Members
+      </Typography>
 
-      {members !== null &&
-        members.map((member, index) => {
-          return (
-            <div key={index}>
-              <p>{member.amount}</p>
-              <p>{member.address}</p>
-            </div>
-          );
-        })}
+      {members !== null && <BasicTable rows={members} />}
 
-      {applicants !== null &&
-        applicants.map((applicant, index) => {
-          return (
-            <div key={index}>
-              <p>{applicant.amount}</p>
-              <p>{applicant.address}</p>
-            </div>
-          );
-        })}
+      <Typography className="mt-10 mb-2" variant="h4">
+        TBC Applications
+      </Typography>
+
+      {applicants !== null && <ApplicantTable rows={applicants} />}
 
       {/* <button onClick={paymentTransaction}>click</button>
           <button onClick={getAllAssets}>list pls</button>

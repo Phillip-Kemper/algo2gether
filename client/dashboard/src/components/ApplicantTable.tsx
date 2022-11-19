@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { MenuItem, Select, Typography } from "@mui/material";
+import { Grid, MenuItem, Select, Typography } from "@mui/material";
 
 function createData(
   address: string,
@@ -39,7 +39,7 @@ const rows = [
   ),
 ];
 
-export default function BasicTable({ rows }: { rows: any }) {
+export default function ApplicantTable({ rows }: { rows: any }) {
   return (
     <TableContainer
       className="background-white"
@@ -51,7 +51,7 @@ export default function BasicTable({ rows }: { rows: any }) {
           <TableRow>
             <TableCell>Algorand Address</TableCell>
             <TableCell align="right">Opted In</TableCell>
-            <TableCell align="right">Role</TableCell>
+            <TableCell align="right">Designated Role</TableCell>
             <TableCell align="right">Assign New Role</TableCell>
           </TableRow>
         </TableHead>
@@ -67,23 +67,41 @@ export default function BasicTable({ rows }: { rows: any }) {
                 </Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography>{row["opted-in-at-round"]} </Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography>{row.role} </Typography>
+                <Typography>{row["opted-in-at-round"]}</Typography>
               </TableCell>
               <TableCell align="right">
                 <Select style={{ width: "50%" }}>
                   <MenuItem value={"member"}>
-                    <Typography>Member</Typography>
+                    <Typography>Member </Typography>
                   </MenuItem>
                   <MenuItem value={"moc"}>
-                    <Typography>Coin Master </Typography>
+                    <Typography>Coin Master</Typography>
                   </MenuItem>
                   <MenuItem value={"promoter"}>
-                    <Typography>Promoter </Typography>
+                    <Typography> Promoter </Typography>
                   </MenuItem>
                 </Select>
+              </TableCell>
+              <TableCell align="right">
+                <Grid
+                  justifyContent="flex-end"
+                  container
+                  direction="row"
+                  spacing={"4"}
+                >
+                  <Grid item>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                      Approve
+                    </button>
+                  </Grid>
+                  <tr />
+
+                  <Grid item>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                      Reject
+                    </button>
+                  </Grid>
+                </Grid>
               </TableCell>
             </TableRow>
           ))}

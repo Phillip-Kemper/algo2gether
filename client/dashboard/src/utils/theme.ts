@@ -7,7 +7,7 @@ export const THEME = createTheme({
     fontFamily: `"Acme", sans-serif`,
     fontSize: 14,
     fontWeightLight: 300,
-    fontWeightRegular: 400,
+    fontWeightRegular: 600,
     fontWeightMedium: 500,
   },
 
