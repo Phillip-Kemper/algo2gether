@@ -1,24 +1,13 @@
-import * as React from "react";
+import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import MyAlgo from "@randlabs/myalgo-connect";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import MyAlgo from "@randlabs/myalgo-connect";
 import { algodClient, ASSET_ID } from "../utils/constants";
-
-function createData(
-  address: string,
-  //notes: string,
-  optedIn: number,
-  role: string,
-  actions: number
-) {
-  return { address, optedIn, role, actions };
-}
 
 const transferAssetToAddress = async (toAddress) => {
   const myAlgoWallet = new MyAlgo();

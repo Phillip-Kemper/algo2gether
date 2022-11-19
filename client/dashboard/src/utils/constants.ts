@@ -1,14 +1,5 @@
 import algosdk from "algosdk";
 
-const config = {
-  algodToken: "",
-  algodServer: "https://node.testnet.algoexplorerapi.io",
-  algodPort: "",
-  indexerToken: "",
-  indexerServer: "https://algoindexer.testnet.algoexplorerapi.io",
-  indexerPort: "",
-};
-
 export const algodToken = "";
 export const algodServer = "https://node.testnet.algoexplorerapi.io";
 export const algodPort = "443";

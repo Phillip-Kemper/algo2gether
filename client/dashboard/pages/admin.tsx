@@ -1,11 +1,9 @@
-import algosdk from "algosdk";
-import MyAlgo from "@randlabs/myalgo-connect";
-import BasicTable from "../src/components/BasicTable";
 import { Typography } from "@mui/material";
-import { algodClient, ASSET_ID, indexerClient } from "../src/utils/constants";
+import MyAlgo from "@randlabs/myalgo-connect";
 import React, { useEffect } from "react";
-import { getAssetBalanceForAddress, getOptedIn } from ".";
 import ApplicantTable from "../src/components/ApplicantTable";
+import BasicTable from "../src/components/BasicTable";
+import { algodClient, ASSET_ID, indexerClient } from "../src/utils/constants";
 
 export default function Admin() {
   const address = localStorage.getItem("address");
@@ -72,7 +70,7 @@ export default function Admin() {
 
       console.log(txn);
 
-      let signedTxn = await myAlgoWallet.signTransaction(txn);
+      const signedTxn = await myAlgoWallet.signTransaction(txn);
 
       console.log(signedTxn.txID);
 

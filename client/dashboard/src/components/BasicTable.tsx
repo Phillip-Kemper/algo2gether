@@ -1,12 +1,13 @@
-import * as React from "react";
+import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import MyAlgo from "@randlabs/myalgo-connect";
+import { algodClient, ASSET_ID } from "../utils/constants";
 
 function createData(
   address: string,
@@ -39,6 +40,47 @@ const rows = [
   ),
 ];
 
+const revoke = async (address) => {
+  const myAlgoWallet = new MyAlgo();
+  try {
+    let txn = await algodClient.getTransactionParams().do();
+
+    txn = {
+      ...txn,
+      fee: 1000,
+      flatFee: true,
+      type: "axfer",
+      assetIndex: ASSET_ID,
+      //from Admin to user Address
+      from: localStorage.getItem("address"),
+      to: localStorage.getItem("address"),
+      revocationTarget: address,
+      amount: 1,
+      note: new Uint8Array(Buffer.from("Revoked")),
+    };
+
+    console.log(txn);
+
+    const signedTxn = await myAlgoWallet.signTransaction(txn);
+
+    console.log(signedTxn.txID);
+
+    await algodClient.sendRawTransaction(signedTxn.blob).do();
+
+    try {
+      await fetch("/api/blacklist/" + address, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 export default function BasicTable({ rows }: { rows: any }) {
   return (
     <TableContainer
@@ -89,7 +131,12 @@ export default function BasicTable({ rows }: { rows: any }) {
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <TableCell>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button
+                      onClick={async () => {
+                        await revoke(row.address);
+                      }}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                    >
                       Revoke
                     </button>
                   </TableCell>

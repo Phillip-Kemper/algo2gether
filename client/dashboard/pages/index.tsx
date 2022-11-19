@@ -48,7 +48,7 @@ const Home: NextPage = () => {
 
       console.log(txn);
 
-      let signedTxn = await myAlgoWallet.signTransaction(txn);
+      const signedTxn = await myAlgoWallet.signTransaction(txn);
 
       console.log(signedTxn.txID);
 
