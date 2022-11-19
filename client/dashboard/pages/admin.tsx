@@ -3,11 +3,14 @@ import MyAlgo from "@randlabs/myalgo-connect";
 import BasicTable from "../src/components/BasicTable";
 import { Typography } from "@mui/material";
 import { algodClient, ASSET_ID, indexerClient } from "../src/utils/constants";
-import React from "react";
+import React, { useEffect } from "react";
 import { getAssetBalanceForAddress, getOptedIn } from ".";
 
 export default function Admin() {
   const address = localStorage.getItem("address");
+
+  const [members, setMembers] = React.useState(null);
+  const [applicants, setApplicants] = React.useState(null);
 
   const myAlgoWallet = new MyAlgo();
 
@@ -16,20 +19,33 @@ export default function Admin() {
     balances.filter((balance) => {
       balance.amount > 0;
     });
-
-    const getRevokedMembers = async () => {
-      //   balances.filter(() => {
-      //     balance.amount == 0  // && is in revoked list;
-      //   });
-      // };
-    };
-
-    const getRequestingMembers = async () => {
-      // balance opted in == 0. and not in the others
-    };
-
-    return balances;
   };
+
+  const getData = async () => {
+    const assetInfo = await indexerClient.lookupAssetBalances(ASSET_ID).do();
+    // revoked or already denied
+    //const blacklistedAddresses = await bllablalb...
+
+    const toResponse = assetInfo.balances.filter((balance) => {
+      return balance.amount == 0; // && not In Revoke List;
+    });
+
+    const toDisplay = assetInfo.balances.filter((balance) => {
+      return balance.amount > 0;
+    });
+
+    return [toResponse, toDisplay];
+  };
+
+  useEffect(() => {
+    const getTableData = async () => {
+      const [toResponseBalances, positiveBalances] = await getData();
+      setApplicants(toResponseBalances);
+      setMembers(positiveBalances);
+    };
+
+    getTableData();
+  }, []);
 
   const revokeMembership = async () => {
     /*noop*/
@@ -65,27 +81,34 @@ export default function Admin() {
     }
   };
 
-  const getAllAssets = async () => {
-    try {
-      const assetInfo = await indexerClient.lookupAssetBalances(ASSET_ID).do();
-
-      console.log(
-        "Information for Asset Name: " + JSON.stringify(assetInfo, undefined, 2)
-      );
-      return assetInfo;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <>
       <Typography className="m-5 absolute top-0 right-3">{address}</Typography>
       <Typography variant="h2">TBC Admin Area</Typography>
-      <button onClick={paymentTransaction}>click</button>
-      <button onClick={getAllAssets}>list pls</button>
 
-      <BasicTable />
+      {members !== null &&
+        members.map((member, index) => {
+          return (
+            <div key={index}>
+              <p>{member.amount}</p>
+              <p>{member.address}</p>
+            </div>
+          );
+        })}
+
+      {applicants !== null &&
+        applicants.map((applicant, index) => {
+          return (
+            <div key={index}>
+              <p>{applicant.amount}</p>
+              <p>{applicant.address}</p>
+            </div>
+          );
+        })}
+
+      {/* <button onClick={paymentTransaction}>click</button>
+          <button onClick={getAllAssets}>list pls</button>
+     */}
     </>
   );
 }
