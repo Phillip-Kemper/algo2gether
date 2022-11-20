@@ -23,7 +23,7 @@ Decentralised access and membership management for a community. The use case is 
 There was 2 parallel paths:
 1. Develop a user-friendly Frontend that connects the MyAlgo Wallet and allows users and admins to manage and request their membership and roles.
 2. Develop a soulbound token that is non-transferable and deploy it on the Algorand Network
-3. 
+
 In the beginning we worked separately, but later, when it come to debugging and constructing the transactions, we had to use more than 2 eyes per monitor.
 
 More coffein than the whole country of Italy, a rock-star team of 4 TUM engineers and contributors to the local Blockchain Community of Munich.
