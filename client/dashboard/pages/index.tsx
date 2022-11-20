@@ -76,7 +76,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Typography className="m-5 absolute top-0 right-3">
-        Address: XXRBLKSVRI5UDNVFCUZMQ4J...
+        Address: {address}
       </Typography>
       <Typography variant="h2">Welcome to TBC</Typography>
       <Typography variant="h4"> Your current status:</Typography>
