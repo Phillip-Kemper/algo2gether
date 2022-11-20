@@ -18,7 +18,7 @@ export const getAssetBalanceForAddress = async (address: string) => {
     .do();
 
   return assetInfo.balances.some((balance) => {
-    balance.amount > 0 && balance.address == address;
+    return balance.amount > 0 && balance.address == address;
   });
 };
 
@@ -46,11 +46,7 @@ const Home: NextPage = () => {
         note: new Uint8Array(Buffer.from("Hello World")),
       };
 
-      console.log(txn);
-
       const signedTxn = await myAlgoWallet.signTransaction(txn);
-
-      console.log(signedTxn.txID);
 
       await algodClient.sendRawTransaction(signedTxn.blob).do();
     } catch (error) {
@@ -79,9 +75,8 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Typography className="m-5 absolute top-0 right-3">{address}</Typography>
       <Typography className="m-5 absolute top-0 right-3">
-        Address: {address}
+        Address: XXRBLKSVRI5UDNVFCUZMQ4J...
       </Typography>
       <Typography variant="h2">Welcome to TBC</Typography>
       <Typography variant="h4"> Your current status:</Typography>

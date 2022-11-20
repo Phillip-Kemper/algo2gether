@@ -17,12 +17,6 @@ async function isBlackListed(address) {
   console.log(`The address "` + address + `" was already in the database`);
 }
 
-async function listOfBlacklistedEntries() {
-  collection.find({ isBlacklisted: true }).toArray(function (err, docs) {
-    return docs;
-  });
-}
-
 async function addToBlackListAddress(address) {
   const doc = { address: address, isBlacklisted: true };
   const result = await collection.insertOne(doc);
@@ -39,13 +33,9 @@ async function addToBlackListAddress(address) {
   console.log(check("500").catch(console.dir));
 */
 
-type Data = {
-  name: string;
-};
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   const {
     query: { address },

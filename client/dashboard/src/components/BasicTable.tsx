@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import MyAlgo from "@randlabs/myalgo-connect";
+import { waitForConfirmation } from "algosdk";
 import { algodClient, ASSET_ID } from "../utils/constants";
 
 function createData(
@@ -54,7 +55,7 @@ const revoke = async (address) => {
       //from Admin to user Address
       from: localStorage.getItem("address"),
       to: localStorage.getItem("address"),
-      revocationTarget: address,
+      assetRevocationTarget: address,
       amount: 1,
       note: new Uint8Array(Buffer.from("Revoked")),
     };
@@ -63,9 +64,12 @@ const revoke = async (address) => {
 
     const signedTxn = await myAlgoWallet.signTransaction(txn);
 
-    console.log(signedTxn.txID);
+    console.log(signedTxn);
 
     await algodClient.sendRawTransaction(signedTxn.blob).do();
+
+    await waitForConfirmation(algodClient, signedTxn.txID, 10);
+    window.location.reload();
 
     try {
       await fetch("/api/blacklist/" + address, {

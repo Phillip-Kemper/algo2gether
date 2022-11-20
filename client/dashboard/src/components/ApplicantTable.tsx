@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import MyAlgo from "@randlabs/myalgo-connect";
+import { waitForConfirmation } from "algosdk";
 import { algodClient, ASSET_ID } from "../utils/constants";
 
 const transferAssetToAddress = async (toAddress) => {
@@ -27,13 +28,63 @@ const transferAssetToAddress = async (toAddress) => {
       note: new Uint8Array(Buffer.from("Coin Master")),
     };
 
-    console.log(txn);
+    // txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    //   suggestedParams: { ...txn },
+    //   fee: 1000,
+    //   flatFee: true,
+    //   type: "axfer",
+    //   assetIndex: ASSET_ID,
+    //   //from Admin to user Address
+    //   from: localStorage.getItem("address"),
+    //   to: toAddress,
+    //   amount: 1,
+    //   note: new Uint8Array(Buffer.from("Coin Master")),
+    // });
+
+    // console.log(txn);
+
+    // let freezeTxn = await algodClient.getTransactionParams().do();
+
+    // let fTxn = algosdk.makeAssetFreezeTxnWithSuggestedParamsFromObject({
+    //   suggestedParams: { ...freezeTxn },
+    //   fee: 1000,
+    //   flatFee: true,
+    //   type: "afrz",
+    //   assetIndex: ASSET_ID,
+    //   //from Admin to user Address
+    //   from: localStorage.getItem("address"),
+    //   manager: localStorage.getItem("address"),
+    //   reserve: localStorage.getItem("address"),
+    //   freeze: localStorage.getItem("address"),
+    //   clawback: localStorage.getItem("address"),
+    //   freezeTarget: toAddress,
+    //   freezeState: true,
+    // });
+
+    //let transactions = [txn, fTxn];
+
+    //const groupID = algosdk.computeGroupID(transactions);
+    //    transactions[0].group = groupID;
+    //   transactions[1].group = groupID;
 
     const signedTxn = await myAlgoWallet.signTransaction(txn);
+    // const signedTxn = await myAlgoWallet.signTransaction(
+    //   transactions.map((txn) => txn.toByte())
+    // );
 
-    console.log(signedTxn.txID);
+    //const signedTxn2 = await myAlgoWallet.signTransaction(fTxn);
+
+    // let signed_transactions = [];
+    // signed_transactions.push(signedTxn);
+    // signed_transactions.push(signedTxn2);
+
+    console.log(signedTxn);
+    console.log(signedTxn.blob);
 
     await algodClient.sendRawTransaction(signedTxn.blob).do();
+    await waitForConfirmation(algodClient, signedTxn.txID, 10);
+    window.location.reload();
+    console.log("success");
   } catch (error) {
     console.log(error);
   }
@@ -41,6 +92,7 @@ const transferAssetToAddress = async (toAddress) => {
 
 export default function ApplicantTable({ rows }: { rows: any }) {
   const reject = async (address) => {
+    console.log("hihe");
     try {
       await fetch("/api/blacklist/" + address, {
         method: "POST",
@@ -48,6 +100,7 @@ export default function ApplicantTable({ rows }: { rows: any }) {
           "Content-Type": "application/json",
         },
       });
+      console.log("naaa");
     } catch (error) {
       console.log(error);
     }
