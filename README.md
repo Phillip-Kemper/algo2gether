@@ -1,6 +1,13 @@
 # TUM Blockchain Club - algo2gether
 HackaTUM 22
 
+# Run Frontend
+- Go to client/dashboard
+- yarn install
+- yarn dev  / yarn build followed by yarn run
+- If you want to use it for your own community you have to deploy your token and change the asset it in the consts.ts file
+
+
 # Inspiration
 Decentralised Identity is one of the burning topics in today's and tomorrow's world. With new technologies based on Blockchain popping up every day, the wish for a decentralised identity is getting louder and louder. Being in full control of your data is an step to digital self-sovereignty.
 
