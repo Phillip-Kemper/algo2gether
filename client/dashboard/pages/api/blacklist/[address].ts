@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const uri =
-  "mongodb+srv://admin:admin@cluster0.cozjs5f.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]";
 const client = new MongoClient(uri);
 const collection = client.db("test").collection("test");
 
